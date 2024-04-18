@@ -2,19 +2,12 @@
 wandb/*
 evals/*
 pretrained/*
-logs/*
-body_models/*
 paper_renders/*
-models--t5-base/*
-models--facebook--encodec_24khz/*
-
-data/
-outputs/
+renders/*
 
 .DS_Store
 
 !pretrained/.gitkeep
-!body_models/.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

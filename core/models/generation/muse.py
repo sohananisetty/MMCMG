@@ -1114,7 +1114,7 @@ class MotionMuse(nn.Module):
         path = Path(path)
         assert path.exists()
         state_dict = torch.load(str(path))
-        self.load_state_dict(state_dict)
+        self.load_state_dict(state_dict["model"])
 
     def muse_mask(self, motion_ids: torch.Tensor, ignore_index: int = -100):
         batch, K, T = motion_ids.shape
