@@ -1,0 +1,63 @@
+model_name: "motion_muse_body_hands"
+output_dir: "/srv/hays-lab/scratch/sanisetty3/music_motion/MMCMG/checkpoints/motion_muse_body_hands"
+dataset:
+  dataset_name: "mix"
+  dataset_root: "/srv/hays-lab/scratch/sanisetty3/motionx"
+  motion_rep: "full"
+  text_conditioner_name: "t5-large" #"openai/clip-vit-large-patch14" #"t5-base" #"openai/clip-vit-large-patch14" #"t5-base" #"openai/clip-vit-large-patch14" #"laion/larger_clap_music_and_speech"
+  text_rep: "full_text_embed"
+  audio_rep: "encodec"
+  hml_rep: "gpvc"
+  motion_min_length_s: 4
+  motion_max_length_s: 4
+  window_size_s: 4
+train:
+  resume: False
+  num_train_iters : 110001 #'Number of training steps
+  save_steps : 10000
+  logging_steps : 20
+  wandb_every : 200
+  evaluate_every : 10000
+  eval_bs : 200
+  train_bs : 200
+  gradient_accumulation_steps : 1
+  learning_rate : 3e-4
+  # weight_decay : 1e-3
+  warmup_steps : 8000
+  gamma : 0.05
+  lr_scheduler_type : "cosine"
+
+vqvae:
+  body_config: "/srv/hays-lab/scratch/sanisetty3/music_motion/MMCMG/checkpoints/vqvae/vqvae_body/vqvae_body.yaml"
+  left_hand_config: "/srv/hays-lab/scratch/sanisetty3/music_motion/MMCMG/checkpoints/vqvae/vqvae_left_hand/vqvae_left_hand.yaml"
+  right_hand_config: "/srv/hays-lab/scratch/sanisetty3/music_motion/MMCMG/checkpoints/vqvae/vqvae_right_hand/vqvae_right_hand.yaml"
+
+
+fuser:
+  fuse_method: [{"cross": ["text"], "input_interpolate": ["audio"]}]
+
+motion_generator:
+  target: "core.models.generation.muse2.MotionMuse"
+  n_q : 3
+  dim : 512
+  depth: 8
+  cond_dropout: 0.4
+  no_mask_token_prob: 0.3
+  audio_input_dim: 128
+  text_input_dim: 1024
+  emb_dropout: 0.1
+  num_tokens: 512
+  flash: True
+  var_len: False
+  quality_emb: False
+  custom: True
+  attn_dropout: 0.1
+  spatial: True
+  film_skip: 3
+  critic_loss_weight: 1.0
+
+
+
+  
+  
+

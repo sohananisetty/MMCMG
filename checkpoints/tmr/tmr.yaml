@@ -1,0 +1,63 @@
+model_name: "tmr"
+output_dir: "/srv/hays-lab/scratch/sanisetty3/music_motion/MMCMG/checkpoints/tmr"
+dataset:
+  dataset_name: "mix"
+  dataset_root: "/srv/hays-lab/scratch/sanisetty3/motionx"
+  motion_rep: "body"
+  text_conditioner_name: "t5-large" #"openai/clip-vit-large-patch14" #"t5-base" #"openai/clip-vit-large-patch14" #"t5-base" #"openai/clip-vit-large-patch14" #"laion/larger_clap_music_and_speech"
+  text_rep: "full_text_embed"
+  hml_rep: "gpvc"
+  motion_min_length_s: 4
+  motion_max_length_s: 12
+  # window_size_s: 4
+train:
+  resume: True
+  num_train_iters : 110001 #'Number of training steps
+  save_steps : 10000
+  logging_steps : 10
+  wandb_every : 200
+  evaluate_every : 10000
+  eval_bs : 32
+  train_bs : 200
+  gradient_accumulation_steps : 1
+  learning_rate : 3e-4
+  weight_decay : 1e-3
+  warmup_steps : 6000
+  gamma : 0.05
+  lr_scheduler_type : "cosine"
+
+
+motion_encoder:
+  target: "core.models.TMR.ACTORStyleEncoder"
+  nfeats: 137
+  latent_dim: 256
+  num_layers: 6
+
+text_encoder:
+  target: "core.models.TMR.ACTORStyleEncoder"
+  nfeats: 1024
+  latent_dim: 256
+  num_layers: 6
+
+motion_decoder:
+  target: "core.models.TMR.ACTORStyleDecoder"
+  nfeats: 137
+  latent_dim: 256
+  num_layers: 6
+
+tmr:
+  target: "core.models.TMR.TMR"
+  recons: 1.0
+  latent: 1.0e-5
+  kl: 1.0e-5
+  contrastive: 0.1
+  temperature: 0.1
+  threshold_selfsim: 0.8
+  threshold_selfsim_metrics: 0.95
+  
+
+
+
+  
+  
+

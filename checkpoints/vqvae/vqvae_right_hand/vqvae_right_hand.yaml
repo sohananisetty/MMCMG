@@ -1,0 +1,40 @@
+model_name: "vqvae_right_hand"
+output_dir: "/srv/hays-lab/scratch/sanisetty3/music_motion/ATCMG/checkpoints/vqvae/vqvae_right_hand"
+dataset:
+  dataset_name: "mix"
+  dataset_root: "/srv/hays-lab/scratch/sanisetty3/motionx"
+  motion_rep: "right_hand"
+  hml_rep: "prv"
+  window_size: 120
+train:
+  resume: False
+  num_train_iters : 310000 #'Number of training steps
+  save_steps : 10000
+  logging_steps : 10
+  wandb_every : 200
+  evaluate_every : 10000
+  eval_bs : 200
+  train_bs : 200
+  gradient_accumulation_steps : 1
+  learning_rate : 2e-4
+  weight_decay : 1e-3
+  warmup_steps : 4000
+  gamma : 0.05
+  lr_scheduler_type : "cosine"
+vqvae:
+  target: "core.models.VQVAE.vqvae.HumanVQVAE"
+  nb_joints : 15
+  motion_dim : 180
+  dim : 768
+  depth: 3
+  codebook_size : 512
+  codebook_dim : 256
+  commit : 0.02
+  loss_vel : 0.5
+  loss_motion: 1.0
+  recons_loss : "l1_smooth"
+  # window_size: 120
+  down_sampling_ratio: 4
+  
+  
+

@@ -1,0 +1,40 @@
+model_name: "vqvae_body_gpvc"
+output_dir: "/srv/hays-lab/scratch/sanisetty3/music_motion/MMCMG/checkpoints/vqvae/vqvae_body"
+dataset:
+  dataset_name: "mix"
+  dataset_root: "/srv/hays-lab/scratch/sanisetty3/motionx"
+  motion_rep: "body"
+  hml_rep: "gpvc"
+  window_size: 120
+  remove_translation: True
+train:
+  resume: False
+  num_train_iters : 110001 #'Number of training steps
+  save_steps : 10000
+  logging_steps : 50
+  wandb_every : 200
+  evaluate_every : 10000
+  eval_bs : 400
+  train_bs : 400
+  gradient_accumulation_steps : 1
+  learning_rate : 2e-4
+  # weight_decay : 1e-3
+  warmup_steps : 6000
+  gamma : 0.05
+  lr_scheduler_type : "cosine"
+vqvae:
+  target: "core.models.VQVAE.vqvae.HumanVQVAE2"
+  dim : 768
+  depth: 8
+  codebook_size : 512
+  codebook_dim : 512
+  commit : 0.25
+  loss_motion: 2.0
+  recons_loss : "l1_smooth"
+  use_geodesic_loss: False
+  down_sampling_ratio: 4
+  motion_dim: 135
+  nb_joints: 22
+  
+  
+
